@@ -8,7 +8,7 @@ export default {
       black: '#0F0E0C',
       green: '#4BC2A3',
       red: '#FF5A44',
-    }
+    },
     extend: {},
   },
   plugins: [],
