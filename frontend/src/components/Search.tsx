@@ -10,6 +10,9 @@ export default function Search() {
         <button className="">
           <img className="size-6" src="/img/notification.svg" alt=""></img>
         </button>
+        <select className="appearance-none bg-transparent bg-[url('/img/arrow-down.svg')] bg-[length:8px_4px] bg-[right_0.6rem_center] bg-no-repeat pr-6 text-white">
+          <option>0xfC...E63d1</option>
+        </select>
       </form>
     </search>
   );
