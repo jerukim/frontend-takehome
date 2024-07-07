@@ -7,6 +7,9 @@ export default function Search() {
           type="text"
           placeholder="Search"
         />
+        <button className="">
+          <img className="size-6" src="/img/notification.svg" alt=""></img>
+        </button>
       </form>
     </search>
   );
