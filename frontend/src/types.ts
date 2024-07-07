@@ -1,9 +1,10 @@
 export type Asset = {
+  img_url: string;
   symbol: string;
   name: string;
-  price: string;
+  price: number;
   "24h_change": string;
-  "1h_funding": string;
-  long_open_interest: string;
-  short_open_interest: string;
+  "1h_funding": number;
+  long_open_interest: number;
+  short_open_interest: number;
 };
