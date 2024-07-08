@@ -16,7 +16,6 @@ import { Tab, TabItem } from "./components/Tab";
 
 import tailwind from "./styles/config";
 import { asset, series } from "./fixtures";
-import { useId } from "react";
 
 const queryClient = new QueryClient();
 
@@ -66,8 +65,6 @@ const seriesOptions: DeepPartial<
 };
 
 function App() {
-  const userId = useId();
-
   return (
     <QueryClientProvider client={queryClient}>
       <header>
@@ -84,7 +81,6 @@ function App() {
 
         <section className="flex flex-col gap-4 lg:flex-row">
           <Chart
-            userId={userId}
             options={chartOptions}
             candlestickOptions={seriesOptions}
             data={series}
