@@ -1,6 +1,6 @@
 import AssetOverview from "./components/AssetOverview";
 import Chart from "./components/Chart";
-import Nav from "./components/Nav";
+import { Tab, TabItem } from "./components/Tab";
 import Search from "./components/Search";
 
 import {
@@ -65,17 +65,25 @@ function App() {
       <main className="flex flex-col gap-y-4">
         <AssetOverview asset={asset} />
 
-        <Nav />
+        <Tab>
+          <TabItem label="Price" isActive={true} />
+          <TabItem label="Funding" isActive={false} />
+        </Tab>
 
-        <div className="flex flex-col gap-4 lg:flex-row">
+        <section className="flex flex-col gap-4 lg:flex-row">
           <Chart
             options={chartOptions}
             candlestickOptions={seriesOptions}
             data={series}
           />
 
-          <div className="h-96 w-full bg-[#161514] lg:h-auto lg:w-[320px] lg:flex-shrink-0 lg:self-stretch"></div>
-        </div>
+          <div className="w-full bg-[#161514] px-4 pb-4 lg:w-[320px] lg:flex-shrink-0 lg:self-stretch">
+            <Tab>
+              <TabItem className="flex-grow" label="Price" isActive={true} />
+              <TabItem className="flex-grow" label="Funding" isActive={false} />
+            </Tab>
+          </div>
+        </section>
       </main>
     </>
   );
