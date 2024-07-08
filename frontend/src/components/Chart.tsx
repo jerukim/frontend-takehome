@@ -8,6 +8,7 @@ import {
   WhitespaceData,
   CandlestickStyleOptions,
   SeriesOptionsCommon,
+  UTCTimestamp,
 } from "lightweight-charts";
 import { useCallback, useRef } from "react";
 
@@ -105,6 +106,8 @@ export default function Chart({
   candlestickOptions,
 }: ChartProps) {
   const chart = useRef<IChartApi>();
+  const reaction = useRef("");
+  const throttle = useRef(false);
 
   const chartContainerRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -116,6 +119,26 @@ export default function Chart({
           chart.current.addCandlestickSeries(candlestickOptions);
 
         candlestickSeries.setData(data);
+
+        chart.current.subscribeCrosshairMove((param) => {
+          if (reaction.current && throttle.current === false) {
+            throttle.current = true;
+
+            candlestickSeries.setMarkers([
+              {
+                time: param.time as UTCTimestamp,
+                position: "aboveBar",
+                // @ts-ignore
+                shape: "",
+                color: "",
+                text: reaction.current,
+              },
+            ]);
+
+            reaction.current = "";
+            throttle.current = false;
+          }
+        });
       } else {
         chart.current?.remove();
         chart.current = undefined;
@@ -124,16 +147,28 @@ export default function Chart({
     [data, chart, options, candlestickOptions],
   );
 
+  function dragOverHandler(event: React.DragEvent<HTMLDivElement>) {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "copy";
+  }
+
+  function dropHandler(event: React.DragEvent<HTMLDivElement>) {
+    event.preventDefault();
+    reaction.current = event.dataTransfer.getData("text/plain");
+  }
+
   return (
     <section className="grid h-[551px] w-full grid-cols-[1.5rem_1fr] grid-rows-[1.5rem_1fr] gap-y-4 bg-black-16 p-2 md:px-6 md:pb-6">
       <ChartSettings />
 
       <ChartControls />
 
-      {/* Chart */}
+      {/* ChartGraph */}
       <div
         className="col-start-2 row-start-2 h-full w-[calc(100vw-4.5rem)] md:w-[calc(100vw-8.5rem)] lg:w-[calc(100vw-9.5rem-320px)] xl:w-[calc(100vw-15.5rem-320px)]"
         ref={chartContainerRef}
+        onDragOver={dragOverHandler}
+        onDrop={dropHandler}
       />
     </section>
   );
