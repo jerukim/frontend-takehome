@@ -122,7 +122,7 @@ export default function Chart({
 
       {/* Chart */}
       <div
-        className="col-start-2 row-start-2 h-full w-[calc(100vw-4.5rem)] md:w-[calc(100vw-8.5rem)] lg:w-[calc(100vw-8.5rem-320px)] xl:w-[calc(100vw-14.5rem-320px)]"
+        className="col-start-2 row-start-2 h-full w-[calc(100vw-4.5rem)] md:w-[calc(100vw-8.5rem)] lg:w-[calc(100vw-9.5rem-320px)] xl:w-[calc(100vw-15.5rem-320px)]"
         ref={chartContainerRef}
       />
     </div>
