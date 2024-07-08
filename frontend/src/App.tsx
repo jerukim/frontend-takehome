@@ -1,4 +1,5 @@
 import AssetOverview from "./components/AssetOverview";
+import Chart from "./components/Chart";
 import Nav from "./components/Nav";
 import Search from "./components/Search";
 
@@ -13,6 +14,7 @@ function App() {
       <main className="col-span-full grid grid-cols-subgrid gap-4">
         <AssetOverview asset={asset} />
         <Nav />
+        <Chart />
       </main>
     </>
   );
