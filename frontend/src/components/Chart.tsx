@@ -45,9 +45,9 @@ export default function Chart({
   );
 
   return (
-    <div className="col-span-full grid h-[551px] grid-cols-[auto_1fr] grid-rows-[auto_1fr] gap-y-4 bg-[#161514] p-2 md:px-6 md:pb-6 xl:col-span-9">
+    <div className="grid h-[551px] w-full grid-cols-[1.5rem_1fr] grid-rows-[1.5rem_1fr] gap-y-4 bg-[#161514] p-2 md:px-6 md:pb-6">
       {/* Chart Settings */}
-      <menu className="col-span-full col-start-1 row-start-1 flex h-6 items-center justify-between">
+      <menu className="col-span-full flex h-6 items-center justify-between">
         <div className="flex divide-x divide-white">
           <button className="flex-shrink-0 pr-2">
             <img className="size-6" src="/img/add-circle.svg" alt="" />
@@ -121,7 +121,10 @@ export default function Chart({
       </menu>
 
       {/* Chart */}
-      <div className="col-start-2 row-start-2" ref={chartContainerRef}></div>
+      <div
+        className="col-start-2 row-start-2 h-full w-[calc(100vw-4.5rem)] md:w-[calc(100vw-8.5rem)] lg:w-[calc(100vw-8.5rem-320px)] xl:w-[calc(100vw-14.5rem-320px)]"
+        ref={chartContainerRef}
+      />
     </div>
   );
 }
