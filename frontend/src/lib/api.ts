@@ -24,10 +24,11 @@ export async function postReactions(body: {
 }) {
   const res = await fetch("http://localhost:3001/addReaction", {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
 
   if (!res.ok) throw new Error("Something went wrong posting reaction");
 
-  return res.json();
+  return res.text();
 }

@@ -13,11 +13,16 @@ import {
   SeriesMarkerShape,
 } from "lightweight-charts";
 import { useCallback, useRef } from "react";
-import { useQuery } from "react-query";
-import { getReactions } from "../lib/api";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  Reaction,
+  ReactionBody,
+  getReactions,
+  postReactions,
+} from "../lib/api";
+import { getRandomArbitrary } from "../fixtures";
 
 type ChartProps = {
-  userId: string;
   data: (CandlestickData<Time> | WhitespaceData<Time>)[];
   options?: DeepPartial<TimeChartOptions>;
   candlestickOptions?: DeepPartial<
@@ -105,14 +110,36 @@ function ChartControls() {
   );
 }
 
+function transformReactionsToMarkers(reactions: Record<string, Reaction[]>) {
+  return Object.entries(reactions)
+    .map(
+      ([timestamp, reactions]) =>
+        ({
+          time: (new Date(timestamp).getTime() / 1000) as UTCTimestamp,
+          position: "inBar",
+          text: reactions.map(({ emoji }) => emoji).join(""),
+        }) as SeriesMarker<Time>,
+    )
+    .sort((a, b) => (a.time as number) - (b.time as number));
+}
+
 export default function Chart({
   data,
   options,
   candlestickOptions,
 }: ChartProps) {
+  const userId = "user" + Math.round(getRandomArbitrary(1, 10));
+  const queryClient = useQueryClient();
   const { data: reactions } = useQuery({
     queryKey: ["reactions"],
     queryFn: getReactions,
+  });
+  const mutation = useMutation({
+    mutationFn: ({ timestamp, emoji }: Omit<ReactionBody, "userId">) =>
+      postReactions({ userId, timestamp, emoji }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["reactions"] });
+    },
   });
 
   const chart = useRef<IChartApi>();
@@ -131,33 +158,20 @@ export default function Chart({
         candlestickSeries.setData(data);
 
         if (reactions) {
-          const mappedReactions = Object.entries(reactions).map(
-            ([timestamp, reactions]) =>
-              ({
-                time: (new Date(timestamp).getTime() / 1000) as UTCTimestamp,
-                position: "aboveBar",
-                shape: "" as SeriesMarkerShape,
-                color: "",
-                text: reactions.map(({ emoji }) => emoji).join(""),
-              }) as SeriesMarker<Time>,
-          );
-          candlestickSeries.setMarkers(mappedReactions);
+          candlestickSeries.setMarkers(transformReactionsToMarkers(reactions));
         }
 
         chart.current.subscribeCrosshairMove((param) => {
           if (reaction.current && throttle.current === false) {
             throttle.current = true;
 
-            candlestickSeries.setMarkers([
-              {
-                time: param.time as UTCTimestamp,
-                position: "aboveBar",
-                // @ts-ignore
-                shape: "",
-                color: "",
-                text: reaction.current,
-              },
-            ]);
+            mutation.mutate({
+              timestamp:
+                new Date((param.time as number) * 1000)
+                  .toISOString()
+                  .split(".")[0] + "Z",
+              emoji: reaction.current,
+            });
 
             reaction.current = "";
             throttle.current = false;
