@@ -45,11 +45,11 @@ export default function Chart({
   );
 
   return (
-    <div className="grid h-[551px] w-full grid-cols-[1.5rem_1fr] grid-rows-[1.5rem_1fr] gap-y-4 bg-[#161514] p-2 md:px-6 md:pb-6">
+    <section className="bg-black-16 grid h-[551px] w-full grid-cols-[1.5rem_1fr] grid-rows-[1.5rem_1fr] gap-y-4 p-2 md:px-6 md:pb-6">
       {/* Chart Settings */}
       <menu className="col-span-full flex h-6 items-center justify-between">
         <div className="flex divide-x divide-white">
-          <button className="flex-shrink-0 pr-2">
+          <button className="shrink-0 pr-2">
             <img className="size-6" src="/img/add-circle.svg" alt="" />
           </button>
 
@@ -57,24 +57,24 @@ export default function Chart({
             1h
           </button>
 
-          <button className="flex-shrink-0 px-2">
+          <button className="shrink-0 px-2">
             <img className="size-6" src="/img/candles.svg" alt="" />
           </button>
 
-          <button className="font-sm flex flex-shrink-0 px-2 font-mono uppercase text-white">
+          <button className="font-sm flex shrink-0 px-2 font-mono uppercase text-white">
             <img className="size-6" src="/img/function.svg" alt="" />
             Indicators
           </button>
         </div>
 
         <div className="flex items-center gap-x-4 border-l border-gray pl-4">
-          <button className="flex-shrink-0">
+          <button className="shrink-0">
             <img className="size-6" src="/img/gear.svg" alt="" />
           </button>
-          <button className="flex-shrink-0">
+          <button className="shrink-0">
             <img className="size-6" src="/img/scan.svg" alt="" />
           </button>
-          <button className="flex-shrink-0">
+          <button className="shrink-0">
             <img className="size-6" src="/img/camera.svg" alt="" />
           </button>
         </div>
@@ -125,6 +125,6 @@ export default function Chart({
         className="col-start-2 row-start-2 h-full w-[calc(100vw-4.5rem)] md:w-[calc(100vw-8.5rem)] lg:w-[calc(100vw-9.5rem-320px)] xl:w-[calc(100vw-15.5rem-320px)]"
         ref={chartContainerRef}
       />
-    </div>
+    </section>
   );
 }
