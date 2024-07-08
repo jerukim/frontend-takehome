@@ -1,7 +1,7 @@
 import { CandlestickData, Time, UTCTimestamp } from "lightweight-charts";
 import { Asset } from "./types";
 
-function getRandomArbitrary(min: number, max: number) {
+export function getRandomArbitrary(min: number, max: number) {
   return Math.random() * (max - min) + min;
 }
 
@@ -20,7 +20,6 @@ export const asset: Asset = {
   short_open_interest: parseFloat(getRandomArbitrary(-10, 10).toFixed(3)),
 };
 
-
 function generateSeries() {
   const series: CandlestickData<Time>[] = [];
 
@@ -33,10 +32,9 @@ function generateSeries() {
       close: parseFloat(
         (prevClose + getRandomArbitrary(-1000, 1000)).toFixed(2),
       ),
-      time:
-        new Date(
-          `2024-06-24T${i.toString().padStart(2, "0")}:00:00Z`,
-        ).getTime() / 1000 as UTCTimestamp,
+      time: (new Date(
+        `2024-06-24T${i.toString().padStart(2, "0")}:00:00Z`,
+      ).getTime() / 1000) as UTCTimestamp,
     });
   }
 
