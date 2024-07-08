@@ -24,7 +24,7 @@ function AssetOverviewItem({
 }) {
   return (
     <li>
-      <h2 className="text-xxs font-mono uppercase text-gray">{name}</h2>
+      <h2 className="font-mono text-xxs uppercase text-gray">{name}</h2>
       <span
         className={clsx(
           "font-sans text-sm font-bold uppercase",
@@ -41,7 +41,7 @@ function AssetOverviewItem({
 
 export default function AssetOverview({ asset }: { asset: Asset }) {
   return (
-    <section className="col-span-full border-b border-solid border-[#1A1A1A] py-2">
+    <section className="border-b border-solid border-[#1A1A1A] py-2">
       <ul className="flex items-center justify-between">
         <li className="flex items-center gap-x-2">
           <img className="size-6" src={asset.img_url} alt={asset.name} />

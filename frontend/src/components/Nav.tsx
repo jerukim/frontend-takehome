@@ -20,7 +20,7 @@ function NavItem({ label, href }: { label: string; href: string }) {
 
 export default function Nav() {
   return (
-    <nav className="col-span-full flex gap-x-4 border-b border-solid border-[#1A1A1A]">
+    <nav className="flex gap-x-4 border-b border-solid border-[#1A1A1A]">
       <NavItem label="Price" href="/" />
       <NavItem label="Funding" href="/funding" />
     </nav>
