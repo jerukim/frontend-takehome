@@ -79,12 +79,9 @@ function App() {
             data={series}
           />
 
-          <div className="w-full bg-[#161514] px-4 pb-4 lg:w-[320px] lg:flex-shrink-0 lg:self-stretch">
-            <Tab>
-              <TabItem className="flex-grow" label="Price" isActive={true} />
-              <TabItem className="flex-grow" label="Funding" isActive={false} />
-            </Tab>
-          </div>
+          <aside className="bg-black-16 w-full px-4 pb-4 lg:w-[320px] lg:shrink-0">
+            <PurchaseForm />
+          </aside>
         </section>
       </main>
     </>
