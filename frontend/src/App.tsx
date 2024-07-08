@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "react-query";
 import {
   CandlestickStyleOptions,
   DeepPartial,
@@ -15,6 +16,9 @@ import { Tab, TabItem } from "./components/Tab";
 
 import tailwind from "./styles/config";
 import { asset, series } from "./fixtures";
+import { useId } from "react";
+
+const queryClient = new QueryClient();
 
 const chartOptions: DeepPartial<TimeChartOptions> = {
   autoSize: true,
@@ -35,6 +39,9 @@ const chartOptions: DeepPartial<TimeChartOptions> = {
   },
   rightPriceScale: {
     borderVisible: false,
+  },
+  timeScale: {
+    timeVisible: true,
   },
   grid: {
     vertLines: {
@@ -59,8 +66,10 @@ const seriesOptions: DeepPartial<
 };
 
 function App() {
+  const userId = useId();
+
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <header>
         <Search />
       </header>
@@ -75,6 +84,7 @@ function App() {
 
         <section className="flex flex-col gap-4 lg:flex-row">
           <Chart
+            userId={userId}
             options={chartOptions}
             candlestickOptions={seriesOptions}
             data={series}
@@ -87,7 +97,7 @@ function App() {
 
         <Reactions />
       </main>
-    </>
+    </QueryClientProvider>
   );
 }
 
