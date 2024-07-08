@@ -58,19 +58,24 @@ const seriesOptions: DeepPartial<
 function App() {
   return (
     <>
-      <header className="col-span-full grid grid-cols-subgrid">
+      <header>
         <Search />
       </header>
-      <main className="col-span-full grid grid-cols-subgrid gap-4">
-        <AssetOverview asset={asset} />
-        <Nav />
-        <Chart
-          options={chartOptions}
-          candlestickOptions={seriesOptions}
-          data={series}
-        />
 
-        <div className="col-span-full h-96 bg-[#161514] xl:col-span-3 xl:h-full"></div>
+      <main className="flex flex-col gap-y-4">
+        <AssetOverview asset={asset} />
+
+        <Nav />
+
+        <div className="flex flex-col gap-4 lg:flex-row">
+          <Chart
+            options={chartOptions}
+            candlestickOptions={seriesOptions}
+            data={series}
+          />
+
+          <div className="h-96 w-full bg-[#161514] lg:h-auto lg:w-[320px] lg:flex-shrink-0 lg:self-stretch"></div>
+        </div>
       </main>
     </>
   );

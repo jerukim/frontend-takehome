@@ -1,6 +1,6 @@
 export default function Search() {
   return (
-    <search className="col-span-full">
+    <search>
       <form className="flex h-12 gap-x-2 font-mono">
         <input
           className="flex-1 rounded-sm bg-[#1A1A1A] bg-[url('/img/search-normal.svg')] bg-[left_0.5rem_center] bg-no-repeat pl-10 text-sm uppercase text-white"
