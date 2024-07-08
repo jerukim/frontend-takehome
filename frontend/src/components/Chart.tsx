@@ -9,10 +9,15 @@ import {
   CandlestickStyleOptions,
   SeriesOptionsCommon,
   UTCTimestamp,
+  SeriesMarker,
+  SeriesMarkerShape,
 } from "lightweight-charts";
 import { useCallback, useRef } from "react";
+import { useQuery } from "react-query";
+import { getReactions } from "../lib/api";
 
 type ChartProps = {
+  userId: string;
   data: (CandlestickData<Time> | WhitespaceData<Time>)[];
   options?: DeepPartial<TimeChartOptions>;
   candlestickOptions?: DeepPartial<
@@ -105,6 +110,11 @@ export default function Chart({
   options,
   candlestickOptions,
 }: ChartProps) {
+  const { data: reactions } = useQuery({
+    queryKey: ["reactions"],
+    queryFn: getReactions,
+  });
+
   const chart = useRef<IChartApi>();
   const reaction = useRef("");
   const throttle = useRef(false);
@@ -119,6 +129,20 @@ export default function Chart({
           chart.current.addCandlestickSeries(candlestickOptions);
 
         candlestickSeries.setData(data);
+
+        if (reactions) {
+          const mappedReactions = Object.entries(reactions).map(
+            ([timestamp, reactions]) =>
+              ({
+                time: (new Date(timestamp).getTime() / 1000) as UTCTimestamp,
+                position: "aboveBar",
+                shape: "" as SeriesMarkerShape,
+                color: "",
+                text: reactions.map(({ emoji }) => emoji).join(""),
+              }) as SeriesMarker<Time>,
+          );
+          candlestickSeries.setMarkers(mappedReactions);
+        }
 
         chart.current.subscribeCrosshairMove((param) => {
           if (reaction.current && throttle.current === false) {
@@ -144,7 +168,7 @@ export default function Chart({
         chart.current = undefined;
       }
     },
-    [data, chart, options, candlestickOptions],
+    [data, reactions, chart, options, candlestickOptions],
   );
 
   function dragOverHandler(event: React.DragEvent<HTMLDivElement>) {
