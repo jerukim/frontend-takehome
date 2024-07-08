@@ -1,8 +1,3 @@
-import AssetOverview from "./components/AssetOverview";
-import Chart from "./components/Chart";
-import Nav from "./components/Nav";
-import Search from "./components/Search";
-
 import {
   CandlestickStyleOptions,
   DeepPartial,
@@ -11,12 +6,19 @@ import {
   TimeChartOptions,
 } from "lightweight-charts";
 
+import AssetOverview from "./components/AssetOverview";
+import Chart from "./components/Chart";
+import PurchaseForm from "./components/PurchaseForm";
+import Search from "./components/Search";
+import { Tab, TabItem } from "./components/Tab";
+
+import tailwind from "./styles/config";
 import { asset, series } from "./fixtures";
 
 const chartOptions: DeepPartial<TimeChartOptions> = {
   autoSize: true,
   watermark: {
-    color: "#F2F1F0",
+    color: tailwind.theme.colors.white,
     visible: true,
     text: "BTC/USDT - 1H - Vest\n",
     fontSize: 14,
@@ -26,7 +28,7 @@ const chartOptions: DeepPartial<TimeChartOptions> = {
   },
   layout: {
     background: { color: "transparent" },
-    textColor: "#AEADAD",
+    textColor: tailwind.theme.colors.gray,
     fontSize: 14,
     fontFamily: "IBM Plex Mono",
   },
@@ -35,10 +37,10 @@ const chartOptions: DeepPartial<TimeChartOptions> = {
   },
   grid: {
     vertLines: {
-      color: "#424242",
+      color: tailwind.theme.colors["black-42"],
     },
     horzLines: {
-      color: "#424242",
+      color: tailwind.theme.colors["black-42"],
     },
   },
 };
@@ -46,13 +48,13 @@ const seriesOptions: DeepPartial<
   CandlestickStyleOptions & SeriesOptionsCommon
 > = {
   priceLineStyle: LineStyle.Solid,
-  priceLineColor: "#4BC2A3",
-  upColor: "#4BC2A3",
-  downColor: "#E03737",
+  priceLineColor: tailwind.theme.colors.green,
+  upColor: tailwind.theme.colors.green,
+  downColor: tailwind.theme.colors["red-e0"],
   borderVisible: false,
-  wickUpColor: "#4BC2A3",
-  wickDownColor: "#E03737",
-  baseLineColor: "#4BC2A3",
+  wickUpColor: tailwind.theme.colors.green,
+  wickDownColor: tailwind.theme.colors["red-e0"],
+  baseLineColor: tailwind.theme.colors.green,
 };
 
 function App() {
@@ -65,17 +67,22 @@ function App() {
       <main className="flex flex-col gap-y-4">
         <AssetOverview asset={asset} />
 
-        <Nav />
+        <Tab>
+          <TabItem label="Price" isActive={true} />
+          <TabItem label="Funding" isActive={false} />
+        </Tab>
 
-        <div className="flex flex-col gap-4 lg:flex-row">
+        <section className="flex flex-col gap-4 lg:flex-row">
           <Chart
             options={chartOptions}
             candlestickOptions={seriesOptions}
             data={series}
           />
 
-          <div className="h-96 w-full bg-[#161514] lg:h-auto lg:w-[320px] lg:flex-shrink-0 lg:self-stretch"></div>
-        </div>
+          <aside className="bg-black-16 w-full px-4 pb-4 lg:w-[320px] lg:shrink-0">
+            <PurchaseForm />
+          </aside>
+        </section>
       </main>
     </>
   );

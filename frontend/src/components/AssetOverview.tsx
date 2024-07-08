@@ -41,7 +41,7 @@ function AssetOverviewItem({
 
 export default function AssetOverview({ asset }: { asset: Asset }) {
   return (
-    <section className="border-b border-solid border-[#1A1A1A] py-2">
+    <section className="border-black-1a border-b border-solid py-2">
       <ul className="flex items-center justify-between">
         <li className="flex items-center gap-x-2">
           <img className="size-6" src={asset.img_url} alt={asset.name} />
