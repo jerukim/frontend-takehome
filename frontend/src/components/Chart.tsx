@@ -2,7 +2,7 @@ export default function Chart() {
   return (
     <div className="col-span-6 grid h-[551px] grid-cols-[auto_1fr] grid-rows-[auto_1fr] gap-y-4">
       {/* Chart Settings */}
-      <div className="col-span-full col-start-1 row-start-1 flex h-6 items-center justify-between">
+      <menu className="col-span-full col-start-1 row-start-1 flex h-6 items-center justify-between">
         <div className="flex divide-x divide-white">
           <button className="flex-shrink-0 pr-2">
             <img className="size-6" src="/img/add-circle.svg" alt="" />
@@ -33,7 +33,7 @@ export default function Chart() {
             <img className="size-6" src="/img/camera.svg" alt="" />
           </button>
         </div>
-      </div>
+      </menu>
 
       {/* Chart Controls */}
       <menu className="flex flex-col gap-y-4">
