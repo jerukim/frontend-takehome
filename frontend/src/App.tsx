@@ -9,6 +9,7 @@ import {
 import AssetOverview from "./components/AssetOverview";
 import Chart from "./components/Chart";
 import PurchaseForm from "./components/PurchaseForm";
+import { Reactions } from "./components/Reactions";
 import Search from "./components/Search";
 import { Tab, TabItem } from "./components/Tab";
 
@@ -79,10 +80,12 @@ function App() {
             data={series}
           />
 
-          <aside className="bg-black-16 w-full px-4 pb-4 lg:w-[320px] lg:shrink-0">
+          <aside className="w-full bg-black-16 px-4 pb-4 lg:w-[320px] lg:shrink-0">
             <PurchaseForm />
           </aside>
         </section>
+
+        <Reactions />
       </main>
     </>
   );
