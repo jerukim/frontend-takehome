@@ -1,5 +1,5 @@
-import { CandlestickData, Time } from "lightweight-charts";
-import { ReactionBody, Reactions } from "../types";
+import type { CandlestickData, Time } from "lightweight-charts";
+import type { ReactionBody, Reactions } from "../types";
 import { API_BASE_URL } from "./constants";
 
 export async function getSeries() {

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "react-query";
-import { ReactionBody, postReaction } from "./api";
+import { postReaction } from "./api";
 import { QUERY_KEYS } from "./constants";
+import type { ReactionBody } from "../types";
 
 export default function useMutateReactions(userId: string) {
   const queryClient = useQueryClient();
