@@ -1,4 +1,3 @@
-import { CandlestickData, Time, UTCTimestamp } from "lightweight-charts";
 import { Asset } from "./types";
 import { getRandomArbitrary } from "./lib/util";
 
