@@ -17,25 +17,4 @@ export const asset: Asset = {
   short_open_interest: parseFloat(getRandomArbitrary(-10, 10).toFixed(3)),
 };
 
-function generateSeries() {
-  const series: CandlestickData<Time>[] = [];
-
-  for (let i = 0; i < 25; i++) {
-    const prevClose = series[i - 1]?.close ?? asset.price;
-    series.push({
-      open: parseFloat(prevClose.toFixed(2)),
-      high: parseFloat((prevClose + getRandomArbitrary(0, 1000)).toFixed(2)),
-      low: parseFloat((prevClose - getRandomArbitrary(-1000, 0)).toFixed(2)),
-      close: parseFloat(
-        (prevClose + getRandomArbitrary(-1000, 1000)).toFixed(2),
-      ),
-      time: (new Date(
-        `2024-06-24T${i.toString().padStart(2, "0")}:00:00Z`,
-      ).getTime() / 1000) as UTCTimestamp,
-    });
-  }
-
-  return series;
-}
-
-export const series = generateSeries();
+export const userId = "user" + Math.round(getRandomArbitrary(1, 10));
