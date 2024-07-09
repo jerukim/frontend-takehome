@@ -4,12 +4,17 @@ import { Tabs, TabItem } from "./Tabs";
 import { tailwind } from "../styles/config";
 import { triangle } from "../styles/shapes";
 
+type PurchaseType = "long" | "short";
+
 export default function PurchaseForm() {
+  const [purchaseType, setPurchaseType] = useState<PurchaseType>("long");
+
   function handleClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    const audio = new Audio("/audio/Ping.wav");
     const rect = event.currentTarget.getBoundingClientRect();
 
+    const audio = new Audio("/audio/Ping.wav");
     audio.play();
+
     confetti({
       particleCount: 500,
       spread: 360,
@@ -153,7 +158,7 @@ export default function PurchaseForm() {
         type="submit"
         onClick={handleClick}
       >
-        Buy / Long
+        Buy / {purchaseType}
       </button>
     </form>
   );
