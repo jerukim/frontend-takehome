@@ -8,3 +8,14 @@ export type Asset = {
   long_open_interest: number;
   short_open_interest: number;
 };
+
+export type Reaction = {
+  userId: string;
+  emoji: string;
+};
+
+export type ReactionBody = Reaction & {
+  timestamp: string;
+};
+
+export type Reactions = Record<string, Reaction[]>;

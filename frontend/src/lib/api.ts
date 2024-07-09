@@ -1,28 +1,18 @@
-export type Reaction = {
-  userId: string;
-  emoji: string;
-};
+import { ReactionBody, Reactions } from "../types";
+import { API_BASE_URL } from "./constants";
 
 export async function getReactions() {
-  const res = await fetch("http://localhost:3001/getReactions");
+  const res = await fetch(`${API_BASE_URL}/getReactions`);
 
   if (!res.ok) throw new Error("Something went wrong getting reactions");
 
-  const data: Record<string, Reaction[]> = await res.json();
+  const data: Reactions = await res.json();
 
   return data;
 }
 
-export type ReactionBody = Reaction & {
-  timestamp: string;
-};
-
-export async function postReactions(body: {
-  userId: string;
-  timestamp: string;
-  emoji: string;
-}) {
-  const res = await fetch("http://localhost:3001/addReaction", {
+export async function postReaction(body: ReactionBody) {
+  const res = await fetch(`${API_BASE_URL}/addReaction`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),

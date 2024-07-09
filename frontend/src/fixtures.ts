@@ -1,9 +1,6 @@
 import { CandlestickData, Time, UTCTimestamp } from "lightweight-charts";
 import { Asset } from "./types";
-
-export function getRandomArbitrary(min: number, max: number) {
-  return Math.random() * (max - min) + min;
-}
+import { getRandomArbitrary } from "./lib/util";
 
 export const asset: Asset = {
   img_url: "/img/bitcoin.svg",
