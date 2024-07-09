@@ -11,16 +11,13 @@ function Reaction({ value }: { value: string }) {
   );
 }
 
-export function Reactions() {
+export function Reactions({ options }: { options: string[] }) {
   return (
     <div className="flex h-10 shrink items-center gap-x-4 self-start rounded-full bg-black-25 px-4 py-2">
-      <Reaction value="🚀" />
-      <Reaction value="😍" />
-      <Reaction value="😡" />
-      <Reaction value="😭" />
-      <Reaction value="😱" />
-      <Reaction value="👎" />
-      <button aria-label="Show more reactions">
+      {options.map((value) => (
+        <Reaction key={value} value={value} />
+      ))}
+      <button type="button" aria-label="Show more reactions">
         <img src="/img/add-circle-dark.svg" alt="" />
       </button>
     </div>

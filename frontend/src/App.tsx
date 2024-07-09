@@ -33,7 +33,7 @@ function App() {
           </aside>
         </section>
 
-        <Reactions />
+        <Reactions options={["🚀", "😍", "😡", "😭", "😱", "👎"]} />
       </main>
     </QueryClientProvider>
   );
