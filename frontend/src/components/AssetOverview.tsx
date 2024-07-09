@@ -42,7 +42,7 @@ function AssetOverviewItem({
 export default function AssetOverview({ asset }: { asset: Asset }) {
   return (
     <section className="border-b border-solid border-black-1a py-2">
-      <ul className="grid grid-cols-1 gap-4 min-[400px]:grid-cols-2 md:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-4 min-[400px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
         <li className="flex items-center gap-x-2">
           <img className="size-6" src={asset.img_url} alt={asset.name} />
           <h1 className="font-sans text-sm font-bold uppercase text-white">
