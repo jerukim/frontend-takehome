@@ -9,7 +9,7 @@ import ChartSettings from "./ChartSettings";
 import ChartControls from "./ChartControls";
 import ChartGraph from "./ChartGraph";
 
-import tailwind from "../../styles/config";
+import { tailwind } from "../../styles/config";
 
 export default function Chart() {
   const chartOptions: DeepPartial<TimeChartOptions> = {
