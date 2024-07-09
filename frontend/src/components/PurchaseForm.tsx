@@ -1,35 +1,12 @@
-import confetti from "canvas-confetti";
 import { useState } from "react";
+import { ConfettiButton } from "./ConfettiButton";
+import Slider from "./Slider";
 import { Tabs, TabItem } from "./Tabs";
-import { tailwind } from "../styles/config";
-import { triangle } from "../styles/shapes";
 
 type PurchaseType = "long" | "short";
 
 export default function PurchaseForm() {
   const [purchaseType, setPurchaseType] = useState<PurchaseType>("long");
-
-  function handleClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    const rect = event.currentTarget.getBoundingClientRect();
-
-    const audio = new Audio("/audio/Ping.wav");
-    audio.play();
-
-    confetti({
-      particleCount: 500,
-      spread: 360,
-      startVelocity: 50,
-      gravity: 2,
-      ticks: 100,
-      colors: [tailwind.theme.colors.green],
-      shapes: [triangle],
-      origin: {
-        x: (rect.x + rect.width / 2) / window.innerWidth,
-        y: (rect.y + rect.height / 2) / window.innerHeight,
-      },
-      scalar: 3,
-    });
-  }
 
   return (
     <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
@@ -49,6 +26,7 @@ export default function PurchaseForm() {
           Short
         </TabItem>
       </Tabs>
+
       <div className="flex gap-2">
         <div className="flex grow flex-col justify-between">
           <label htmlFor="orderType" className="font-mono text-sm text-white">
@@ -88,41 +66,27 @@ export default function PurchaseForm() {
 
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
-          <label id="leverageLabel" className="font-mono text-sm text-white">
+          <label
+            id="leverage-label"
+            className="font-mono text-sm capitalize text-white"
+          >
             Leverage
           </label>
-          <output id="leverageValue" className="font-sans text-sm text-white">
+          <output id="leverage-value" className="font-sans text-sm text-white">
             2.00 X
           </output>
         </div>
-        <div
+        <Slider
           id="leverage"
-          className="relative flex h-10"
-          role="slider"
-          aria-labelledby="leverageLabel"
-          aria-orientation="vertical"
-          aria-label="leverage"
-          aria-valuemin={2.0}
-          aria-valuemax={128.0}
-          aria-valuenow={2.0}
-          tabIndex={0}
-        >
-          {/* Track */}
-          <div className="relative flex h-[6px] w-full items-center justify-between rounded-full bg-black-25 px-0.5">
-            {/* Markers */}
-            {[2, 5, 10, 25, 50, 100, 128].map((value) => (
-              <div key={value} className="relative flex flex-col items-center">
-                <div className="h-3 w-[2px] rounded-full bg-gray-50"></div>
-                <span className="absolute top-full translate-y-3 font-mono text-xxs text-white">
-                  {value}x
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* Thumb */}
-          <div className="absolute size-4 -translate-y-1/3 rounded-full bg-gray" />
-        </div>
+          name="leverage"
+          min={2}
+          max={128}
+          now={2}
+          steps={[2, 5, 10, 25, 50, 100, 128].map((step) => ({
+            value: step,
+            label: `${step}x`,
+          }))}
+        />
       </div>
 
       <output
@@ -130,20 +94,27 @@ export default function PurchaseForm() {
         name="result"
         htmlFor="orderType size leverage"
       >
-        <div className="flex items-center justify-between">
-          <h3 className="font-mono text-sm text-gray">Liquidation Price</h3>
-          <span className="font-mono text-sm text-white">300,212 USDC</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <h3 className="font-mono text-sm text-gray">Slippage</h3>
-          <span className="font-mono text-sm text-white">1.20 USDC (0.3%)</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <h3 className="font-mono text-sm text-gray">Fee</h3>
-          <span className="font-mono text-sm text-white">
-            2.00 USDC (0.05%)
-          </span>
-        </div>
+        <table>
+          <tbody className="*:*:pb-2 *:last:*:pb-0">
+            {[
+              { label: "Liquidation Price", value: "300,212 USDC" },
+              { label: "Slippage", value: "1.20 USDC (0.3%)" },
+              { label: "Fee", value: "2.00 USDC (0.05%)" },
+            ].map(({ label, value }) => (
+              <tr key={label}>
+                <th
+                  className="text-nowrap text-left font-mono text-sm text-gray"
+                  scope="row"
+                >
+                  {label}
+                </th>
+                <td className="text-nowrap text-right font-mono text-sm text-white">
+                  {value}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </output>
 
       <button
@@ -153,13 +124,12 @@ export default function PurchaseForm() {
         Advanced <img src="/img/chevron-down.svg" alt="" />
       </button>
 
-      <button
+      <ConfettiButton
         className="bg-green py-3 font-mono uppercase"
         type="submit"
-        onClick={handleClick}
       >
         Buy / {purchaseType}
-      </button>
+      </ConfettiButton>
     </form>
   );
 }
