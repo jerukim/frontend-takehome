@@ -1,3 +1,6 @@
+import { useCallback, useRef } from "react";
+import useReactions from "../lib/useReactions";
+import useMutateReactions from "../lib/useMutateReactions";
 import {
   IChartApi,
   createChart,
@@ -8,19 +11,9 @@ import {
   WhitespaceData,
   CandlestickStyleOptions,
   SeriesOptionsCommon,
-  UTCTimestamp,
-  SeriesMarker,
-  SeriesMarkerShape,
+  MouseEventParams,
 } from "lightweight-charts";
-import { useCallback, useRef } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import {
-  Reaction,
-  ReactionBody,
-  getReactions,
-  postReactions,
-} from "../lib/api";
-import { getRandomArbitrary } from "../fixtures";
+import { getRandomArbitrary, transformReactionsToMarkers } from "../lib/util";
 
 type ChartProps = {
   data: (CandlestickData<Time> | WhitespaceData<Time>)[];
@@ -110,41 +103,19 @@ function ChartControls() {
   );
 }
 
-function transformReactionsToMarkers(reactions: Record<string, Reaction[]>) {
-  return Object.entries(reactions)
-    .map(
-      ([timestamp, reactions]) =>
-        ({
-          time: (new Date(timestamp).getTime() / 1000) as UTCTimestamp,
-          position: "inBar",
-          text: reactions.map(({ emoji }) => emoji).join(""),
-        }) as SeriesMarker<Time>,
-    )
-    .sort((a, b) => (a.time as number) - (b.time as number));
-}
-
 export default function Chart({
   data,
   options,
   candlestickOptions,
 }: ChartProps) {
   const userId = "user" + Math.round(getRandomArbitrary(1, 10));
-  const queryClient = useQueryClient();
-  const { data: reactions } = useQuery({
-    queryKey: ["reactions"],
-    queryFn: getReactions,
-  });
-  const mutation = useMutation({
-    mutationFn: ({ timestamp, emoji }: Omit<ReactionBody, "userId">) =>
-      postReactions({ userId, timestamp, emoji }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["reactions"] });
-    },
-  });
+
+  const { data: reactions } = useReactions();
+  const { mutate: mutateReactions } = useMutateReactions(userId);
 
   const chart = useRef<IChartApi>();
   const reaction = useRef("");
-  const throttle = useRef(false);
+  const throttled = useRef(false);
 
   const chartContainerRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -154,18 +125,16 @@ export default function Chart({
 
         const candlestickSeries =
           chart.current.addCandlestickSeries(candlestickOptions);
-
         candlestickSeries.setData(data);
+        candlestickSeries.setMarkers(
+          transformReactionsToMarkers(reactions ?? {}),
+        );
 
-        if (reactions) {
-          candlestickSeries.setMarkers(transformReactionsToMarkers(reactions));
-        }
+        function handleAddReaction(param: MouseEventParams<Time>) {
+          if (reaction.current && !throttled.current) {
+            throttled.current = true;
 
-        chart.current.subscribeCrosshairMove((param) => {
-          if (reaction.current && throttle.current === false) {
-            throttle.current = true;
-
-            mutation.mutate({
+            mutateReactions({
               timestamp:
                 new Date((param.time as number) * 1000)
                   .toISOString()
@@ -174,9 +143,11 @@ export default function Chart({
             });
 
             reaction.current = "";
-            throttle.current = false;
+            throttled.current = false;
           }
-        });
+        }
+
+        chart.current.subscribeCrosshairMove(handleAddReaction);
       } else {
         chart.current?.remove();
         chart.current = undefined;
