@@ -3,7 +3,6 @@ import { tailwind } from "../styles/config";
 import { triangle } from "../styles/shapes";
 
 export function ConfettiButton({
-  className,
   onClick,
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
