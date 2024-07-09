@@ -12,8 +12,8 @@
 
 ### Instructions:
 Simply run these commands from project root directory
-1. make up
-2. make start
+1. `make up`
+2. `make start`
 
 Or simply:
-1. make up && make start
+1. `make up && make start`
