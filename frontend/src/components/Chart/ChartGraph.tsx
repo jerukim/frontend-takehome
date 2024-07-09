@@ -27,8 +27,8 @@ export default function ChartGraph({
   chartOptions,
   seriesOptions,
 }: ChartProps) {
-  const { data: series = [], status } = useSeries();
-  const { data: reactions = {} } = useReactions();
+  const series = useSeries();
+  const reactions = useReactions();
   const { mutate: mutateReactions } = useMutateReactions(userId);
 
   const chart = useRef<IChartApi>();
@@ -40,13 +40,21 @@ export default function ChartGraph({
       if (reaction.current && !throttled.current) {
         throttled.current = true;
 
-        mutateReactions({
-          timestamp:
-            new Date((param.time as number) * 1000)
-              .toISOString()
-              .split(".")[0] + "Z",
-          emoji: reaction.current,
-        });
+        // use optimistic
+        mutateReactions(
+          {
+            timestamp:
+              new Date((param.time as number) * 1000)
+                .toISOString()
+                .split(".")[0] + "Z",
+            emoji: reaction.current,
+          },
+          {
+            onError: () => {
+              // handle error and rever optimistic value
+            },
+          },
+        );
 
         reaction.current = "";
         throttled.current = false;
@@ -63,8 +71,11 @@ export default function ChartGraph({
 
         const candlestickSeries =
           chart.current.addCandlestickSeries(seriesOptions);
-        candlestickSeries.setData(series);
-        candlestickSeries.setMarkers(transformReactionsToMarkers(reactions));
+        candlestickSeries.setData(series.data ?? []);
+        if (series.data?.length && reactions.data)
+          candlestickSeries.setMarkers(
+            transformReactionsToMarkers(reactions.data),
+          );
 
         chart.current.subscribeCrosshairMove(handleAddReaction);
       } else {
@@ -72,7 +83,14 @@ export default function ChartGraph({
         chart.current = undefined;
       }
     },
-    [series, reactions, chart, chartOptions, seriesOptions, handleAddReaction],
+    [
+      series.data,
+      reactions.data,
+      chart,
+      chartOptions,
+      seriesOptions,
+      handleAddReaction,
+    ],
   );
 
   function dragOverHandler(event: React.DragEvent<HTMLDivElement>) {
@@ -89,7 +107,8 @@ export default function ChartGraph({
     <div
       className={clsx(
         "col-start-2 row-start-2 h-full w-[calc(100vw-4.5rem)] md:w-[calc(100vw-8.5rem)] lg:w-[calc(100vw-9.5rem-320px)] xl:w-[calc(100vw-15.5rem-320px)]",
-        status === "loading" && "animate-pulse",
+        (series.status === "loading" || reactions.status === "loading") &&
+          "animate-pulse",
       )}
       ref={chartContainerRef}
       onDragOver={dragOverHandler}
