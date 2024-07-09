@@ -7,7 +7,7 @@ export default function ChartSettings() {
         </button>
 
         <button className="font-sm px-2 font-mono uppercase text-white">
-          1h
+          24h
         </button>
 
         <button className="shrink-0 px-2">

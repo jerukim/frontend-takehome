@@ -17,7 +17,7 @@ export default function Chart() {
     watermark: {
       color: tailwind.theme.colors.white,
       visible: true,
-      text: "BTC/USDT - 1H - Vest\n",
+      text: "BTC/USDT - 24H - Vest",
       fontSize: 14,
       fontFamily: "IBM Plex Mono",
       horzAlign: "left",
