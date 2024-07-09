@@ -8,6 +8,12 @@ type PurchaseType = "long" | "short";
 export default function PurchaseForm() {
   const [purchaseType, setPurchaseType] = useState<PurchaseType>("long");
 
+  const outputItems = [
+    { label: "Liquidation Price", value: "300,212 USDC" },
+    { label: "Slippage", value: "1.20 USDC (0.3%)" },
+    { label: "Fee", value: "2.00 USDC (0.05%)" },
+  ];
+
   return (
     <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
       <Tabs>
@@ -96,11 +102,7 @@ export default function PurchaseForm() {
       >
         <table>
           <tbody className="*:*:pb-2 *:last:*:pb-0">
-            {[
-              { label: "Liquidation Price", value: "300,212 USDC" },
-              { label: "Slippage", value: "1.20 USDC (0.3%)" },
-              { label: "Fee", value: "2.00 USDC (0.05%)" },
-            ].map(({ label, value }) => (
+            {outputItems.map(({ label, value }) => (
               <tr key={label}>
                 <th
                   className="text-nowrap text-left font-mono text-sm text-gray"
