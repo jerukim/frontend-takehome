@@ -1,14 +1,15 @@
 import clsx from "clsx";
 
+type TabItemProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  isActive: boolean;
+};
+
 export function TabItem({
   className,
-  label,
+  children,
   isActive,
-}: {
-  className?: string;
-  label: string;
-  isActive: boolean;
-}) {
+  ...props
+}: TabItemProps) {
   return (
     <button
       className={clsx(
@@ -17,8 +18,9 @@ export function TabItem({
         isActive ? "text-red" : "text-white-50 opacity-75",
       )}
       type="button"
+      {...props}
     >
-      {label}
+      {children}
       {isActive && (
         <div className="absolute -bottom-px left-0 h-px w-full bg-red" />
       )}
@@ -26,9 +28,9 @@ export function TabItem({
   );
 }
 
-export function Tab({ children }: { children: React.ReactNode }) {
+export function Tabs({ children }: { children: React.ReactNode }) {
   return (
-    <menu className="border-black-1a flex gap-x-4 border-b border-solid">
+    <menu className="flex gap-x-4 border-b border-solid border-black-1a">
       {children}
     </menu>
   );
