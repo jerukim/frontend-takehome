@@ -1,8 +1,32 @@
+import confetti from "canvas-confetti";
 import { Tab, TabItem } from "./Tab";
+import { tailwind } from "../styles/config";
+import { triangle } from "../styles/shapes";
 
 export default function PurchaseForm() {
+  function handleClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    const audio = new Audio("/audio/Ping.wav");
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    audio.play();
+    confetti({
+      particleCount: 500,
+      spread: 360,
+      startVelocity: 50,
+      gravity: 2,
+      ticks: 100,
+      colors: [tailwind.theme.colors.green],
+      shapes: [triangle],
+      origin: {
+        x: (rect.x + rect.width / 2) / window.innerWidth,
+        y: (rect.y + rect.height / 2) / window.innerHeight,
+      },
+      scalar: 3,
+    });
+  }
+
   return (
-    <form className="flex flex-col gap-4">
+    <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
       <Tab>
         <TabItem className="grow" label="Price" isActive={true} />
         <TabItem className="grow" label="Funding" isActive={false} />
@@ -13,7 +37,7 @@ export default function PurchaseForm() {
             Order type
           </label>
           <select
-            className="bg-black-1a h-12 appearance-none rounded-sm bg-[url('/img/chevron-down.svg')] bg-[length:1.5rem] bg-[right_0.25rem_center] bg-no-repeat px-2 text-sm uppercase text-white"
+            className="h-12 appearance-none rounded-sm bg-black-1a bg-[url('/img/chevron-down.svg')] bg-[length:1.5rem] bg-[right_0.25rem_center] bg-no-repeat px-2 text-sm uppercase text-white"
             id="orderType"
             name="orderType"
           >
@@ -30,7 +54,7 @@ export default function PurchaseForm() {
         <label htmlFor="size" className="font-mono text-sm text-white">
           Size
         </label>
-        <div className="bg-black-1a flex items-center rounded-sm">
+        <div className="flex items-center rounded-sm bg-black-1a">
           <input
             className="h-12 grow appearance-none bg-transparent px-2 text-sm text-white"
             id="size"
@@ -41,7 +65,7 @@ export default function PurchaseForm() {
           />
           <span className="pr-2 text-xs text-gray">USDC</span>
         </div>
-        <span className="text-gray-100 font-mono text-sm">Up to 1,458.173</span>
+        <span className="font-mono text-sm text-gray-100">Up to 1,458.173</span>
       </div>
 
       <div className="flex flex-col gap-4">
@@ -66,11 +90,11 @@ export default function PurchaseForm() {
           tabIndex={0}
         >
           {/* Track */}
-          <div className="bg-black-25 relative flex h-[6px] w-full items-center justify-between rounded-full px-0.5">
+          <div className="relative flex h-[6px] w-full items-center justify-between rounded-full bg-black-25 px-0.5">
             {/* Markers */}
             {[2, 5, 10, 25, 50, 100, 128].map((value) => (
               <div key={value} className="relative flex flex-col items-center">
-                <div className="bg-gray-50 h-3 w-[2px] rounded-full"></div>
+                <div className="h-3 w-[2px] rounded-full bg-gray-50"></div>
                 <span className="absolute top-full translate-y-3 font-mono text-xxs text-white">
                   {value}x
                 </span>
@@ -111,7 +135,11 @@ export default function PurchaseForm() {
         Advanced <img src="/img/chevron-down.svg" alt="" />
       </button>
 
-      <button className="bg-green py-3 font-mono uppercase" type="submit">
+      <button
+        className="bg-green py-3 font-mono uppercase"
+        type="submit"
+        onClick={handleClick}
+      >
         Buy / Long
       </button>
     </form>
