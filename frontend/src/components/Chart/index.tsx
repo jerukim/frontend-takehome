@@ -5,11 +5,23 @@ import {
   SeriesOptionsCommon,
   LineStyle,
 } from "lightweight-charts";
-import ChartSettings from "./ChartSettings";
-import ChartControls from "./ChartControls";
 import ChartGraph from "./ChartGraph";
 
 import { tailwind } from "../../styles/config";
+
+type ButtonProps = { label: string; imgSrc: string; onClick: () => void };
+
+function mapButtons(buttons: ButtonProps[]) {
+  return buttons.map(({ label, imgSrc }) => (
+    <button
+      key={label + imgSrc}
+      className="font-sm flex shrink-0 px-2 font-mono uppercase text-white"
+    >
+      {imgSrc && <img className="size-6" src={imgSrc} alt="" />}
+      {label}
+    </button>
+  ));
+}
 
 export default function Chart() {
   const chartOptions: DeepPartial<TimeChartOptions> = {
@@ -58,11 +70,52 @@ export default function Chart() {
     baseLineColor: tailwind.theme.colors.green,
   };
 
+  const leftSettings: ButtonProps[] = [
+    { label: "", imgSrc: "/img/add-circle.svg", onClick: () => {} },
+    { label: "1h", imgSrc: "", onClick: () => {} },
+    { label: "", imgSrc: "/img/candles.svg", onClick: () => {} },
+    {
+      label: "Indicators",
+      imgSrc: "/img/function.svg",
+      onClick: () => {},
+    },
+  ];
+  const rightSettings: ButtonProps[] = [
+    { label: "", imgSrc: "/img/gear.svg", onClick: () => {} },
+    { label: "", imgSrc: "/img/scan.svg", onClick: () => {} },
+    { label: "", imgSrc: "/img/camera.svg", onClick: () => {} },
+  ];
+  const leftControls: ButtonProps[] = [
+    { label: "", imgSrc: "/img/cross.svg", onClick: () => {} },
+    { label: "", imgSrc: "/img/trend-line.svg", onClick: () => {} },
+    { label: "", imgSrc: "/img/fib ret.svg", onClick: () => {} },
+    { label: "", imgSrc: "/img/brush.svg", onClick: () => {} },
+    { label: "", imgSrc: "/img/text.svg", onClick: () => {} },
+    { label: "", imgSrc: "/img/XABCD pattern.svg", onClick: () => {} },
+    { label: "", imgSrc: "/img/long position.svg", onClick: () => {} },
+    { label: "", imgSrc: "/img/heart.svg", onClick: () => {} },
+    { label: "", imgSrc: "/img/ruler.svg", onClick: () => {} },
+    { label: "", imgSrc: "/img/search-zoom-in.svg", onClick: () => {} },
+    { label: "", imgSrc: "/img/magnet.svg", onClick: () => {} },
+    { label: "", imgSrc: "/img/lock drawing mode.svg", onClick: () => {} },
+  ];
+
   return (
-    <section className="grid h-[551px] w-full grid-cols-[1.5rem_1fr] grid-rows-[1.5rem_1fr] gap-y-4 bg-black-16 p-2 md:px-6 md:pb-6">
-      <ChartSettings />
-      <ChartControls />
+    <div className="grid h-[551px] w-full grid-cols-[1.5rem_1fr] grid-rows-[1.5rem_1fr] gap-y-4 bg-black-16 p-2 md:px-6 md:pb-6">
+      <menu className="col-span-full flex h-6 items-center justify-between">
+        <div className="flex divide-x divide-white">
+          {mapButtons(leftSettings)}
+        </div>
+        <div className="flex items-center gap-x-4 border-l border-gray pl-4">
+          {mapButtons(rightSettings)}
+        </div>
+      </menu>
+
+      <menu className="col-start-1 col-end-2 row-start-2 flex flex-col gap-y-4">
+        {mapButtons(leftControls)}
+      </menu>
+
       <ChartGraph chartOptions={chartOptions} seriesOptions={seriesOptions} />
-    </section>
+    </div>
   );
 }
