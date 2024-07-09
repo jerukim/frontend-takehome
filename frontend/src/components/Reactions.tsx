@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 function Reaction({ value }: { value: string }) {
   function dragStartHandler(event: React.DragEvent<HTMLDivElement>) {
     event.dataTransfer.dropEffect = "copy";
@@ -11,9 +13,20 @@ function Reaction({ value }: { value: string }) {
   );
 }
 
-export function Reactions({ options }: { options: string[] }) {
+export function Reactions({
+  className,
+  options,
+}: {
+  className: string;
+  options: string[];
+}) {
   return (
-    <div className="flex h-10 shrink items-center gap-x-4 self-start rounded-full bg-black-25 px-4 py-2">
+    <div
+      className={clsx(
+        "flex h-10 items-center gap-x-4 rounded-full bg-black-25 px-4 py-2",
+        className,
+      )}
+    >
       {options.map((value) => (
         <Reaction key={value} value={value} />
       ))}

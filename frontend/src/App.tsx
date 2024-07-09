@@ -25,7 +25,7 @@ function App() {
           <TabItem isActive={false}>Funding</TabItem>
         </Tabs>
 
-        <section className="flex flex-col gap-4 lg:flex-row">
+        <section className="order-2 flex flex-col gap-4 lg:order-1 lg:flex-row">
           <Chart />
 
           <aside className="w-full bg-black-16 px-4 pb-4 lg:w-[320px] lg:shrink-0">
@@ -33,7 +33,10 @@ function App() {
           </aside>
         </section>
 
-        <Reactions options={["🚀", "😍", "😡", "😭", "😱", "👎"]} />
+        <Reactions
+          className="order-1 shrink self-start lg:order-2"
+          options={["🚀", "😍", "😡", "😭", "😱", "👎"]}
+        />
       </main>
     </QueryClientProvider>
   );
