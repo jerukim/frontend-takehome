@@ -66,19 +66,19 @@ export default function PurchaseForm() {
 
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
-          <label
+          <span
             id="leverage-label"
             className="font-mono text-sm capitalize text-white"
           >
             Leverage
-          </label>
+          </span>
           <output id="leverage-value" className="font-sans text-sm text-white">
             2.00 X
           </output>
         </div>
         <Slider
           id="leverage"
-          name="leverage"
+          labelledBy="leverage-label"
           min={2}
           max={128}
           now={2}

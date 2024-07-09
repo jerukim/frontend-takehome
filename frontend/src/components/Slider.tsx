@@ -1,28 +1,27 @@
 type SliderProps = {
   id: string;
-  name: string;
   min: number;
   max: number;
   now: number;
   steps: { value: number; label: string }[];
+  labelledBy: string;
 };
 
 export default function Slider({
   id,
-  name,
   min,
   max,
   now,
   steps,
+  labelledBy,
 }: SliderProps) {
   return (
     <div
       id={id}
       className="relative flex h-10"
       role="slider"
-      aria-labelledby={`${name}-label`}
+      aria-labelledby={labelledBy}
       aria-orientation="vertical"
-      aria-label={name}
       aria-valuemin={min}
       aria-valuemax={max}
       aria-valuenow={now}
