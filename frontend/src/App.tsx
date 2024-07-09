@@ -4,7 +4,7 @@ import Chart from "./components/Chart";
 import PurchaseForm from "./components/PurchaseForm";
 import { Reactions } from "./components/Reactions";
 import Search from "./components/Search";
-import { Tab, TabItem } from "./components/Tab";
+import { Tabs, TabItem } from "./components/Tabs";
 
 import { asset } from "./fixtures";
 
@@ -20,10 +20,10 @@ function App() {
       <main className="flex flex-col gap-y-4">
         <AssetOverview asset={asset} />
 
-        <Tab>
-          <TabItem label="Price" isActive={true} />
-          <TabItem label="Funding" isActive={false} />
-        </Tab>
+        <Tabs>
+          <TabItem isActive={true}>Price</TabItem>
+          <TabItem isActive={false}>Funding</TabItem>
+        </Tabs>
 
         <section className="flex flex-col gap-4 lg:flex-row">
           <Chart />

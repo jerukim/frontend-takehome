@@ -1,5 +1,6 @@
 import confetti from "canvas-confetti";
-import { Tab, TabItem } from "./Tab";
+import { useState } from "react";
+import { Tabs, TabItem } from "./Tabs";
 import { tailwind } from "../styles/config";
 import { triangle } from "../styles/shapes";
 
@@ -27,10 +28,22 @@ export default function PurchaseForm() {
 
   return (
     <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
-      <Tab>
-        <TabItem className="grow" label="Price" isActive={true} />
-        <TabItem className="grow" label="Funding" isActive={false} />
-      </Tab>
+      <Tabs>
+        <TabItem
+          className="grow"
+          onClick={() => setPurchaseType("long")}
+          isActive={purchaseType === "long"}
+        >
+          Long
+        </TabItem>
+        <TabItem
+          className="grow"
+          onClick={() => setPurchaseType("short")}
+          isActive={purchaseType === "short"}
+        >
+          Short
+        </TabItem>
+      </Tabs>
       <div className="flex gap-2">
         <div className="flex grow flex-col justify-between">
           <label htmlFor="orderType" className="font-mono text-sm text-white">
