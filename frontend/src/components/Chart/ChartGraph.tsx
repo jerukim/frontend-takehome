@@ -16,6 +16,7 @@ import type {
   TimeChartOptions,
 } from "lightweight-charts";
 import useSeries from "../../lib/useSeries";
+import clsx from "clsx";
 
 type ChartProps = {
   chartOptions?: DeepPartial<TimeChartOptions>;
@@ -26,7 +27,7 @@ export default function ChartGraph({
   chartOptions,
   seriesOptions,
 }: ChartProps) {
-  const { data: series = [] } = useSeries();
+  const { data: series = [], status } = useSeries();
   const { data: reactions = {} } = useReactions();
   const { mutate: mutateReactions } = useMutateReactions(userId);
 
@@ -86,7 +87,10 @@ export default function ChartGraph({
 
   return (
     <div
-      className="col-start-2 row-start-2 h-full w-[calc(100vw-4.5rem)] md:w-[calc(100vw-8.5rem)] lg:w-[calc(100vw-9.5rem-320px)] xl:w-[calc(100vw-15.5rem-320px)]"
+      className={clsx(
+        "col-start-2 row-start-2 h-full w-[calc(100vw-4.5rem)] md:w-[calc(100vw-8.5rem)] lg:w-[calc(100vw-9.5rem-320px)] xl:w-[calc(100vw-15.5rem-320px)]",
+        status === "loading" && "animate-pulse",
+      )}
       ref={chartContainerRef}
       onDragOver={dragOverHandler}
       onDrop={dropHandler}
